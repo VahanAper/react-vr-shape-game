@@ -17,6 +17,11 @@ const styles = StyleSheet.create({
       { translate: [0, 2, -5] },
     ],
   },
+  game: {
+    transform: [
+      { translate: [-2.25, 0, 0] },
+    ],
+  },
 });
 
 export default class ShapeGame extends Component {
@@ -30,14 +35,24 @@ export default class ShapeGame extends Component {
 
   render() {
     return (
-      <View style={styles.text}>
-        <Text>Find the Odd Shape!</Text>
-        <Shape
-          shapeNumber={0}
-          transform={[
-            { translate: [0, 0, -5] },
-          ]}
-        />
+      <View style={styles.game}>
+        <Text style={styles.text}>Find the Odd Shape!</Text>
+        {
+          this.state.gameShape.map((shape, index) => {
+            const key = `key_${index}`;
+            return (
+              <View key={key}>
+                <Shape
+                  shapeNumber={shape}
+                  colorNumber={index}
+                  transform={[
+                    { translate: [(index - 1.5) * 1.5, 0, -5] },
+                  ]}
+                />
+              </View>
+            );
+          })
+        }
       </View>
     );
   }
