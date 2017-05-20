@@ -4,6 +4,7 @@ import {
   Text,
   View,
   StyleSheet,
+  AsyncStorage,
 } from 'react-vr';
 
 import Shape, { shapes } from './vr/components/shape';
@@ -32,11 +33,15 @@ export default class ShapeGame extends Component {
       gameShapes: [1, 1, 1, 1],
       score: 0,
       specialIndex: 0,
-      moves: 0,
     };
   }
 
   componentDidMount() {
+    AsyncStorage.getItem('score')
+      .then((score) => {
+        this.setState({ score });
+      });
+
     this.newGameSet();
   }
 
@@ -49,7 +54,9 @@ export default class ShapeGame extends Component {
       score -= 1;
     }
 
-    this.setState({ score, moves: this.state.moves + 1 });
+    this.setState({ score });
+
+    AsyncStorage.setItem('score', score);
 
     this.newGameSet();
   }
@@ -80,7 +87,7 @@ export default class ShapeGame extends Component {
     return (
       <View style={styles.game}>
         <Text style={styles.text}>Find the Odd Shape!</Text>
-        <Text style={styles.text}>{this.state.score} / {this.state.moves}</Text>
+        <Text style={styles.text}>Score: {this.state.score}</Text>
         {
           this.state.gameShapes.map((shape, index) => {
             const key = `key_${index}`;
