@@ -6,7 +6,7 @@ import {
   StyleSheet,
 } from 'react-vr';
 
-import Shape from './vr/components/shape';
+import Shape, { shapes } from './vr/components/shape';
 
 const styles = StyleSheet.create({
   text: {
@@ -29,8 +29,31 @@ export default class ShapeGame extends Component {
     super();
 
     this.state = {
-      gameShape: [1, 1, 1, 1],
+      gameShapes: [1, 1, 1, 1],
     };
+  }
+
+  componentDidMount() {
+    this.newGameSet();
+  }
+
+  newGameSet() {
+    const baseShapeId = Math.floor(Math.random() * shapes.length);
+    let specialShapeId = baseShapeId;
+
+    while (specialShapeId === baseShapeId) {
+      specialShapeId = Math.floor(Math.random() * shapes.length);
+    }
+
+    const newgameShapes = [];
+    for (let i = 0; i < this.state.gameShapes.length; i++) {
+      newgameShapes[i] = baseShapeId;
+    }
+
+    const specialIndex = Math.floor(Math.random() * newgameShapes.length);
+    newgameShapes[specialIndex] = specialShapeId;
+
+    this.setState({ gameShapes: newgameShapes });
   }
 
   render() {
@@ -38,7 +61,7 @@ export default class ShapeGame extends Component {
       <View style={styles.game}>
         <Text style={styles.text}>Find the Odd Shape!</Text>
         {
-          this.state.gameShape.map((shape, index) => {
+          this.state.gameShapes.map((shape, index) => {
             const key = `key_${index}`;
             return (
               <View key={key}>

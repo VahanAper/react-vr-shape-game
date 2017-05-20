@@ -14,7 +14,8 @@
       "new-cap": ["error", { "newIsCapExceptions": ["map"] }],
       "no-useless-return": 0,
       "arrow-body-style": 0,
-      "no-underscore-dangle": ["error", { "allowAfterThis": true }]
+      "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
     },
     "globals": {
       "navigator": true,
