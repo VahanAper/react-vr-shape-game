@@ -30,10 +30,27 @@ export default class ShapeGame extends Component {
 
     this.state = {
       gameShapes: [1, 1, 1, 1],
+      score: 0,
+      specialIndex: 0,
+      moves: 0,
     };
   }
 
   componentDidMount() {
+    this.newGameSet();
+  }
+
+  pickShape(index) {
+    let score = this.state.score;
+
+    if (index === this.state.specialIndex) {
+      score += 1;
+    } else {
+      score -= 1;
+    }
+
+    this.setState({ score, moves: this.state.moves + 1 });
+
     this.newGameSet();
   }
 
@@ -53,18 +70,22 @@ export default class ShapeGame extends Component {
     const specialIndex = Math.floor(Math.random() * newgameShapes.length);
     newgameShapes[specialIndex] = specialShapeId;
 
-    this.setState({ gameShapes: newgameShapes });
+    this.setState({
+      gameShapes: newgameShapes,
+      specialIndex,
+    });
   }
 
   render() {
     return (
       <View style={styles.game}>
         <Text style={styles.text}>Find the Odd Shape!</Text>
+        <Text style={styles.text}>{this.state.score} / {this.state.moves}</Text>
         {
           this.state.gameShapes.map((shape, index) => {
             const key = `key_${index}`;
             return (
-              <View key={key}>
+              <View key={key} onEnter={() => this.pickShape(index)}>
                 <Shape
                   shapeNumber={shape}
                   colorNumber={index}
